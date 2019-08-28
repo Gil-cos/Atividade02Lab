@@ -13,10 +13,10 @@ public class AccountService {
 	private AccountRepository accountRepo;
 	
 	@Transactional
-	public void createAccount(Long number, String owner) {
+	public Account createAccount(Long number, String owner) {
 		Account novaConta = new Account();
 		novaConta.setNumber(number);
 		novaConta.setOwner(owner);
-		accountRepo.save(novaConta);
+		return accountRepo.save(novaConta);
 	}
 }
