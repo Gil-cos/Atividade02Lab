@@ -1,5 +1,7 @@
 package com.fatec.lab.atividade02.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -11,4 +13,5 @@ public interface BankRepository extends CrudRepository<Bank, Long> {
 	
 	@Query("FROM Bank b WHERE b.cnpj = :cnpj")
 	Bank findByCnpj(final String cnpj);
+	
 }
