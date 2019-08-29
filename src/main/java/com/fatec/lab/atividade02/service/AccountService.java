@@ -13,7 +13,7 @@ public class AccountService {
 	private AccountRepository accountRepo;
 	
 	@Transactional
-	public Account createAccount(Long number, String owner) {
+	public Account createAccount(final Long number, final String owner) {
 		Account novaConta = new Account();
 		novaConta.setNumber(number);
 		novaConta.setOwner(owner);
