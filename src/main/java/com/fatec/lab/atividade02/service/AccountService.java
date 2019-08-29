@@ -9,9 +9,14 @@ import com.fatec.lab.atividade02.repository.AccountRepository;
 
 @Service
 public class AccountService {
+	
 	@Autowired
 	private AccountRepository accountRepo;
-	
+
+	public void setAccountRepo(AccountRepository accountRepo) {
+		this.accountRepo = accountRepo;
+	}
+
 	@Transactional
 	public Account createAccount(final Long number, final String owner) {
 		Account novaConta = new Account();

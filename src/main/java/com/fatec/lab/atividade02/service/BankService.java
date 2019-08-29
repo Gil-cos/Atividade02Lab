@@ -14,6 +14,14 @@ import com.fatec.lab.atividade02.repository.BankRepository;
 @Service
 public class BankService {
 
+	public void setBankRepository(BankRepository bankRepository) {
+		this.bankRepository = bankRepository;
+	}
+
+	public void setAccountRepo(AccountRepository accountRepo) {
+		this.accountRepo = accountRepo;
+	}
+
 	@Autowired
 	private BankRepository bankRepository;
 	
