@@ -1,10 +1,9 @@
 package com.fatec.lab.atividade02.service;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 
 import javax.transaction.Transactional;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +21,10 @@ public class AccountServiceTest {
 	
 	@Autowired
 	private AccountService service;
-
-	@Before
-	public void setUp() throws Exception{
-		service = new AccountService();
-	}
 	
 	@Test
 	public void createAccountTest() {
 		Account account = service.createAccount(10l, "Gilberto");
-		assertNull(account);
+		assertNotNull(account);
 	}
 }

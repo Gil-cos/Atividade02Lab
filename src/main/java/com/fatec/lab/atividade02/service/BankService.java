@@ -29,12 +29,12 @@ public class BankService {
 	private AccountRepository accountRepo;
 	
 	@Transactional
-	public void createBank(String nome, String cnpj, String endereco) {
+	public Bank createBank(String nome, String cnpj, String endereco) {
 		Bank novoBanco = new Bank();
 		novoBanco.setName(nome);
 		novoBanco.setCnpj(cnpj);
 		novoBanco.setEndereço(endereco);
-		bankRepository.save(novoBanco);
+		return bankRepository.save(novoBanco);
 	}
 	
 	@Transactional 
