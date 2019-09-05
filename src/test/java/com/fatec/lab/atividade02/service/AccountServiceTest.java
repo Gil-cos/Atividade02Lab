@@ -1,6 +1,7 @@
 package com.fatec.lab.atividade02.service;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import javax.transaction.Transactional;
 
@@ -26,5 +27,12 @@ public class AccountServiceTest {
 	public void createAccountTest() {
 		Account account = service.createAccount(10l, "Gilberto");
 		assertNotNull(account);
+	}
+	
+	@Test
+	public void creteAccountNullTest() {
+		Account account = service.createAccount(null, null);
+		assertNull(account.getNumber());
+		assertNull(account.getOwner());
 	}
 }
