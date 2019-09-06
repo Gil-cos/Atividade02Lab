@@ -30,7 +30,7 @@ public class AccountRepositoryTest {
 	
 	@Test
 	public void findByNumberTest() {
-		Account account = repository.findByNumber("123");
+		Account account = repository.findByNumber(123l);
 		assertNull(account);
 	}
 }

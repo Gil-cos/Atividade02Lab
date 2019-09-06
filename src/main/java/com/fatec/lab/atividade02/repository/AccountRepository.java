@@ -12,6 +12,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 	Account findByOwner(final String owner);
 	
 	@Query("FROM Account a WHERE a.number = :number")
-	Account findByNumber(final String number);
+	Account findByNumber(final Long number);
 
 }
