@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fatec.lab.atividade02.view.AccountView;
+
 @Entity
 @Table
 public class Bank {
@@ -16,7 +19,8 @@ public class Bank {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
+	@JsonView({AccountView.AccountResumo.class})
 	private String name;
 	
 	private String cnpj;

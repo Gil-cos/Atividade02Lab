@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fatec.lab.atividade02.view.AccountView;
+
 @Entity
 @Table
 public class Account {
@@ -17,15 +20,19 @@ public class Account {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@JsonView({AccountView.AccountResumo.class})
 	private Long number;
-
-	private String owner;
-
-	private BigDecimal balance;
 	
+	@JsonView({AccountView.AccountResumo.class})
+	private String owner;
+	
+	@JsonView({AccountView.AccountResumo.class})
+	private BigDecimal balance;
+
 	private String password;
 	
-	@ManyToOne	
+	@ManyToOne
+	@JsonView({AccountView.AccountResumo.class})
 	private Bank bank;
 
 	public Long getId() {
