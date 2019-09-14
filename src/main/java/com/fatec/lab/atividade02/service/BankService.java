@@ -1,5 +1,6 @@
 package com.fatec.lab.atividade02.service;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import com.fatec.lab.atividade02.entity.Account;
 import com.fatec.lab.atividade02.entity.Bank;
 import com.fatec.lab.atividade02.repository.AccountRepository;
 import com.fatec.lab.atividade02.repository.BankRepository;
+
+import javassist.tools.rmi.ObjectNotFoundException;
 
 @Service
 public class BankService {
@@ -24,10 +27,10 @@ public class BankService {
 
 	@Autowired
 	private BankRepository bankRepository;
-	
+
 	@Autowired
 	private AccountRepository accountRepo;
-	
+
 	@Transactional
 	public Bank createBank(String nome, String cnpj, String endereco) {
 		Bank novoBanco = new Bank();
@@ -36,35 +39,40 @@ public class BankService {
 		novoBanco.setEndereço(endereco);
 		return bankRepository.save(novoBanco);
 	}
-	
-	@Transactional 
-	public void deleteBank(String cnpj) {
-		Bank deletedBank = bankRepository.findByCnpj(cnpj);
-		if (deletedBank != null) {
-			bankRepository.delete(deletedBank);
-		}
+
+	@Transactional
+	public void deleteBank(Long id) throws ObjectNotFoundException {
+		Bank deletedBank = bankRepository.findById(id)
+				.orElseThrow(() -> new ObjectNotFoundException("Banco não encontrado"));
+
+		bankRepository.delete(deletedBank);
+
 	}
-	
+
 	public Bank getBankByCnpj(String cnpj) {
 		Bank bank = bankRepository.findByCnpj(cnpj);
 		return bank;
 	}
-	
+
 	public Bank getBankByName(String name) {
 		Bank bank = bankRepository.findByName(name);
 		return bank;
 	}
-	
+
 	public void setBankAccount(String bankName, String accountOwnerName) {
 		Bank bank = bankRepository.findByName(bankName);
 		Account conta = accountRepo.findByOwner(accountOwnerName);
-		
+
 		Set<Account> contas = bank.getAccounts();
 		contas.add(conta);
-		
+
 		bank.setAccounts(contas);
-		
+
 		bankRepository.save(bank);
 	}
-	
+
+	public List<Bank> getAll() {
+		return bankRepository.findAll();
+	}
+
 }

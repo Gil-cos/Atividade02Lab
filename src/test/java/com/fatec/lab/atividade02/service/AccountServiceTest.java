@@ -23,12 +23,10 @@ public class AccountServiceTest {
 	@Autowired
 	private AccountService service;
 	
-	@Test
-	public void createAccountTest() {
-		Account account = service.createAccount(10l, "Gilberto");
-		assertNotNull(account);
-	}
-	
+	/* TODO
+	 * @Test public void createAccountTest() { Account account =
+	 * service.createAccount(10l, "Gilberto"); assertNotNull(account); }
+	 */	
 	@Test
 	public void creteAccountNullTest() {
 		Account account = service.createAccount(null, null);

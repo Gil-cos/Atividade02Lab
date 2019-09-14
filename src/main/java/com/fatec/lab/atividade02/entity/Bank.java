@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fatec.lab.atividade02.view.AccountView;
+import com.fatec.lab.atividade02.view.BankView;
 
 @Entity
 @Table
@@ -20,11 +21,13 @@ public class Bank {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@JsonView({AccountView.AccountResumo.class})
+	@JsonView({AccountView.AccountResumo.class, BankView.BankResumo.class})
 	private String name;
 	
+	@JsonView({BankView.BankResumo.class})
 	private String cnpj;
 	
+	@JsonView({BankView.BankResumo.class})
 	private String endereço;
 	
 	@OneToMany(mappedBy = "bank")
