@@ -3,6 +3,8 @@ package com.fatec.lab.atividade02.entity;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fatec.lab.atividade02.enums.AccountType;
 import com.fatec.lab.atividade02.view.AccountView;
 
 @Entity
@@ -18,22 +21,27 @@ public class Account {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView({AccountView.AccountList.class})
 	private Long id;
 
-	@JsonView({AccountView.AccountResumo.class})
+	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class})
 	private Long number;
 	
-	@JsonView({AccountView.AccountResumo.class})
+	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class})
 	private String owner;
 	
-	@JsonView({AccountView.AccountResumo.class})
+	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class})
 	private BigDecimal balance;
 
 	private String password;
 	
 	@ManyToOne
-	@JsonView({AccountView.AccountResumo.class})
+	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class})
 	private Bank bank;
+	
+	@Enumerated(value = EnumType.STRING)
+	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class})
+	private AccountType type;
 
 	public Long getId() {
 		return id;

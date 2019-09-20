@@ -26,7 +26,7 @@ public class BankController {
 	private BankService bankService;
 
 	@GetMapping
-	@JsonView({ BankView.BankResumo.class })
+	@JsonView({ BankView.BankList.class })
 	public ResponseEntity<List<Bank>> getAll() {
 		return new ResponseEntity<List<Bank>>(bankService.getAll(), HttpStatus.OK);
 	}

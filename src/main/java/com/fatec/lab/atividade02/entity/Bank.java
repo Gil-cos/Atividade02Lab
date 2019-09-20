@@ -19,15 +19,16 @@ public class Bank {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView({BankView.BankList.class})
 	private Long id;
 	
-	@JsonView({AccountView.AccountResumo.class, BankView.BankResumo.class})
+	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class, BankView.BankList.class})
 	private String name;
 	
-	@JsonView({BankView.BankResumo.class})
+	@JsonView({BankView.BankList.class})
 	private String cnpj;
 	
-	@JsonView({BankView.BankResumo.class})
+	@JsonView({BankView.BankList.class})
 	private String endereço;
 	
 	@OneToMany(mappedBy = "bank")

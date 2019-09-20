@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fatec.lab.atividade02.entity.Account;
 import com.fatec.lab.atividade02.entity.Bank;
+import com.fatec.lab.atividade02.enums.AccountType;
 import com.fatec.lab.atividade02.repository.AccountRepository;
 import com.fatec.lab.atividade02.repository.BankRepository;
 
@@ -39,5 +40,9 @@ public class AccountService {
 
 	public Optional<Account> getAccount(Long id) {
 		return accountRepo.findById(id);		
+	}
+
+	public List<Account> getByBankNameAndType(String bankName, AccountType type) {
+		return accountRepo.getByBankNameContainingAndType(bankName, type);
 	}
 }
