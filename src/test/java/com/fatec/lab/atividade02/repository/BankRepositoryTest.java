@@ -2,6 +2,8 @@ package com.fatec.lab.atividade02.repository;
 
 import static org.junit.Assert.assertNull;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -30,7 +32,7 @@ public class BankRepositoryTest {
 	
 	@Test
 	public void findByCnpjReturnNullTest() {
-		Bank bank = repository.findByCnpj("123456789");
+		Optional <Bank> bank = repository.findByCnpj("123456789");
 		assertNull(bank);
 	}
 }

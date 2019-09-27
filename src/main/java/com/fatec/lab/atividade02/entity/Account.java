@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fatec.lab.atividade02.enums.AccountType;
@@ -24,12 +25,15 @@ public class Account {
 	@JsonView({AccountView.AccountList.class})
 	private Long id;
 
+	@NotEmpty(message = "Provide a number")
 	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class})
 	private Long number;
 	
+	@NotEmpty(message = "Provide an owner")
 	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class})
 	private String owner;
 	
+	@NotEmpty(message = "Provide a balance")
 	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class})
 	private BigDecimal balance;
 

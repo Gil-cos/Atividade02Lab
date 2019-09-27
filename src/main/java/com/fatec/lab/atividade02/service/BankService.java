@@ -48,14 +48,13 @@ public class BankService {
 		bankRepository.delete(deletedBank);
 	}
 
-	public Bank getBankByCnpj(String cnpj) {
-		Bank bank = bankRepository.findByCnpj(cnpj);
-		return bank;
+	public Bank getBankByCnpj(String cnpj) throws ObjectNotFoundException {
+		return bankRepository.findByCnpj(cnpj)
+				.orElseThrow(() -> new ObjectNotFoundException("Data not found"));
 	}
 
 	public Bank getBankByName(String name) {
-		Bank bank = bankRepository.findByName(name);
-		return bank;
+		return bankRepository.findByName(name);
 	}
 
 	public void setBankAccount(String bankName, String accountOwnerName) {
