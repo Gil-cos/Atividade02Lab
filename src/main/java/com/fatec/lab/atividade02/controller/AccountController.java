@@ -6,12 +6,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -19,6 +19,8 @@ import com.fatec.lab.atividade02.entity.Account;
 import com.fatec.lab.atividade02.enums.AccountType;
 import com.fatec.lab.atividade02.service.AccountService;
 import com.fatec.lab.atividade02.view.AccountView;
+
+import javassist.tools.rmi.ObjectNotFoundException;
 
 @RestController
 @RequestMapping(value = "api/account")
@@ -32,10 +34,10 @@ public class AccountController {
 	public ResponseEntity<List<Account>> getAll() {
 		return new ResponseEntity<List<Account>>(accountService.getAll(), HttpStatus.OK);
 	}
-	
-	@GetMapping
+
+	@GetMapping(value = "{bankName}/{type}")
 	@JsonView({ AccountView.AccountList.class })
-	public ResponseEntity<List<Account>> getByBankName(@RequestParam(required = false) String bankName, @RequestParam(required = false) AccountType type) {
+	public ResponseEntity<List<Account>> getByBankName(@PathVariable String bankName, @PathVariable AccountType type) {
 		return new ResponseEntity<List<Account>>(accountService.getByBankNameAndType(bankName, type), HttpStatus.OK);
 	}
 
@@ -55,4 +57,11 @@ public class AccountController {
 		Account newAccount = accountService.createAccount(account, bankId);
 		return ResponseEntity.ok(newAccount);
 	}
+
+	@DeleteMapping(value = "{id}")
+	public ResponseEntity<String> delete(@PathVariable Long id) throws ObjectNotFoundException {
+		accountService.deleteAccount(id);
+		return ResponseEntity.noContent().build();
+	}
+
 }

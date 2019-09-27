@@ -46,7 +46,6 @@ public class BankService {
 				.orElseThrow(() -> new ObjectNotFoundException("Banco não encontrado"));
 
 		bankRepository.delete(deletedBank);
-
 	}
 
 	public Bank getBankByCnpj(String cnpj) {

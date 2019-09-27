@@ -13,15 +13,16 @@ import com.fatec.lab.atividade02.enums.AccountType;
 import com.fatec.lab.atividade02.repository.AccountRepository;
 import com.fatec.lab.atividade02.repository.BankRepository;
 
+import javassist.tools.rmi.ObjectNotFoundException;
+
 @Service
 public class AccountService {
-	
+
 	@Autowired
 	private AccountRepository accountRepo;
-	
+
 	@Autowired
 	private BankRepository bankRepo;
-	
 
 	public void setAccountRepo(AccountRepository accountRepo) {
 		this.accountRepo = accountRepo;
@@ -39,10 +40,18 @@ public class AccountService {
 	}
 
 	public Optional<Account> getAccount(Long id) {
-		return accountRepo.findById(id);		
+		return accountRepo.findById(id);
 	}
 
 	public List<Account> getByBankNameAndType(String bankName, AccountType type) {
-		return accountRepo.getByBankNameContainingAndType(bankName, type);
+		return accountRepo.getByBankNameAndType(bankName, type);
 	}
+
+	@Transactional
+	public void deleteAccount(Long id) throws ObjectNotFoundException {
+		Account deletedAccount = accountRepo.findById(id)
+				.orElseThrow(() -> new ObjectNotFoundException("Conta não encontrada"));
+		accountRepo.delete(deletedAccount);
+	}
+
 }

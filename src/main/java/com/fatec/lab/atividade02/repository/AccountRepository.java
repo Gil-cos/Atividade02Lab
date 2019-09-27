@@ -17,6 +17,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 	@Query("FROM Account a WHERE a.number = :number")
 	Account findByNumber(final Long number);
 
-	List<Account> getByBankNameContainingAndType(String bankName, AccountType type);
+	List<Account> getByBankNameAndType(String bankName, AccountType type);
 
 }
