@@ -39,8 +39,8 @@ public class AccountService {
 		return accountRepo.findAll();
 	}
 
-	public Optional<Account> getAccount(Long id) {
-		return accountRepo.findById(id);
+	public Account getAccount(Long id) throws ObjectNotFoundException {
+		return accountRepo.findById(id).orElseThrow(() -> new ObjectNotFoundException("Conta não encontrada"));
 	}
 
 	public List<Account> getByBankNameAndType(String bankName, AccountType type) {

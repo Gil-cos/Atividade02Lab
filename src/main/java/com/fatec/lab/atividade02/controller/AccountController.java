@@ -43,12 +43,12 @@ public class AccountController {
 
 	@GetMapping(value = "{id}")
 	@JsonView({ AccountView.AccountDetail.class })
-	public ResponseEntity<Account> get(@PathVariable Long id) {
-		Optional<Account> optional = accountService.getAccount(id);
-		if (optional.isPresent()) {
-			return new ResponseEntity<Account>(optional.get(), HttpStatus.OK);
-		}
-		return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<Account> get(@PathVariable Long id) throws ObjectNotFoundException {
+		Account conta = accountService.getAccount(id);
+		//if (optional.isPresent()) {
+		return new ResponseEntity<Account>(conta, HttpStatus.OK);
+		//}
+		//return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
 	}
 
 	@PostMapping(value = "{bankId}")
