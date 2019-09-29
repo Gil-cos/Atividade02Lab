@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +31,13 @@ public class AccountService {
 
 	@Transactional
 	public Account createAccount(final Account account, Long bankId) {
+
 		Bank bank = bankRepo.findById(bankId).get();
 		account.setBank(bank);
-		return accountRepo.save(account);
+		Account conta = accountRepo.save(account);
+		return conta;
+	
+		
 	}
 
 	public List<Account> getAll() {
