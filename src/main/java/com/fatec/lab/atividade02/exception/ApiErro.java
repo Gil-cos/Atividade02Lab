@@ -5,13 +5,13 @@ import com.fatec.lab.atividade02.view.ApiErroView;
 
 public class ApiErro {
 	
-	public ApiErro(Integer status, String descricao) {
-		this.status = status;
+	public ApiErro(Integer erro, String descricao) {
+		this.erro = erro;
 		this.descricao = descricao;
 	}
 	
 	@JsonView({ApiErroView.ApiErrorDetail.class})
-	private Integer status;
+	private Integer erro;
 	
 	@JsonView({ApiErroView.ApiErrorDetail.class})
 	private String descricao;

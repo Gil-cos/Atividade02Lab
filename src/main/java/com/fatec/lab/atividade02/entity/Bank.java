@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fatec.lab.atividade02.view.AccountView;
@@ -23,15 +24,15 @@ public class Bank {
 	@JsonView({BankView.BankList.class})
 	private Long id;
 	
-	@NotEmpty(message = "Provide a name")
+	@NotNull(message = "Provide a name")
 	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class, BankView.BankList.class})
 	private String name;
 	
-	@NotEmpty(message = "Provide an cnpj")
+	@NotNull(message = "Provide an cnpj")
 	@JsonView({BankView.BankList.class})
 	private String cnpj;
 	
-	@NotEmpty(message = "Provide an address")
+	@NotNull(message = "Provide an address")
 	@JsonView({BankView.BankList.class})
 	private String endereço;
 	
