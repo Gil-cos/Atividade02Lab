@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -32,7 +31,8 @@ public class Account {
 	
 	@NotNull(message = "Provide an owner")
 	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class})
-	private String owner;
+	@ManyToOne
+	private User owner;
 	
 	@NotNull(message = "Provide a balance")
 	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class})
@@ -64,11 +64,11 @@ public class Account {
 		this.number = number;
 	}
 
-	public String getOwner() {
+	public User getOwner() {
 		return owner;
 	}
 
-	public void setOwner(String owner) {
+	public void setOwner(User owner) {
 		this.owner = owner;
 	}
 

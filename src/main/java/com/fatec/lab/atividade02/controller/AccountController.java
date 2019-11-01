@@ -1,7 +1,6 @@
 package com.fatec.lab.atividade02.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,10 +44,7 @@ public class AccountController {
 	@JsonView({ AccountView.AccountDetail.class })
 	public ResponseEntity<Account> get(@PathVariable Long id) throws ObjectNotFoundException {
 		Account conta = accountService.getAccount(id);
-		//if (optional.isPresent()) {
 		return new ResponseEntity<Account>(conta, HttpStatus.OK);
-		//}
-		//return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
 	}
 
 	@PostMapping(value = "{bankId}")

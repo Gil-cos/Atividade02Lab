@@ -37,7 +37,6 @@ public class AccountServiceTest {
 		account.setId(1L);
 		account.setBalance(BigDecimal.TEN);
 		account.setNumber(123L);
-		account.setOwner("Jilberto Costa");
 		account.setPassword("Gsw190");
 		account.setBank(bank);
 		service.createAccount(account, 1L);
