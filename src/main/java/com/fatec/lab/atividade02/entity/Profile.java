@@ -21,6 +21,11 @@ public class Profile implements GrantedAuthority{
 	@JsonView({ProfileView.ProfileDetail.class, ProfileView.ProfileList.class})
 	private String name;
 	
+	public Profile(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
 	@Override
 	public String getAuthority() {
 		return name;
