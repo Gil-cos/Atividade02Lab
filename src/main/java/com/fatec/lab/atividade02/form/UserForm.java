@@ -29,12 +29,12 @@ public class UserForm {
 		return user;
 	}
 
-	public User update(Long id, UserService userService, PasswordEncoder passwordEncoder) throws ObjectNotFoundException {
-		User user = userService.findById(id);
-		user.setUserName(this.userName);
-		user.setPassword(passwordEncoder.encode(this.password));
-		
-		return user;
-	}
+//	public User update(Long id, UserService userService, PasswordEncoder passwordEncoder) throws ObjectNotFoundException {
+//		User user = userService.findById(id);
+//		user.setUserName(this.userName);
+//		user.setPassword(passwordEncoder.encode(this.password));
+//		
+//		return user;
+//	}
 
 }

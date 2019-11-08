@@ -10,7 +10,14 @@ import org.springframework.security.core.GrantedAuthority;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fatec.lab.atividade02.view.ProfileView;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Profile implements GrantedAuthority{
 
 	private static final long serialVersionUID = 1L;
@@ -21,31 +28,9 @@ public class Profile implements GrantedAuthority{
 	@JsonView({ProfileView.ProfileDetail.class, ProfileView.ProfileList.class})
 	private String name;
 	
-	public Profile(Long id, String name) {
-		this.id = id;
-		this.name = name;
-	}
-
 	@Override
 	public String getAuthority() {
 		return name;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
+	}	
 	
 }

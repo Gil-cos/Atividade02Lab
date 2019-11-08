@@ -16,8 +16,15 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fatec.lab.atividade02.enums.AccountType;
 import com.fatec.lab.atividade02.view.AccountView;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Account {
 	
 	@Id
@@ -47,54 +54,6 @@ public class Account {
 	@Enumerated(value = EnumType.STRING)
 	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class})
 	private AccountType type;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getNumber() {
-		return number;
-	}
-
-	public void setNumber(Long number) {
-		this.number = number;
-	}
-
-	public User getOwner() {
-		return owner;
-	}
-
-	public void setOwner(User owner) {
-		this.owner = owner;
-	}
-
-	public BigDecimal getBalance() {
-		return balance;
-	}
-
-	public void setBalance(BigDecimal balance) {
-		this.balance = balance;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Bank getBank() {
-		return bank;
-	}
-
-	public void setBank(Bank bank) {
-		this.bank = bank;
-	}
 
 
 }

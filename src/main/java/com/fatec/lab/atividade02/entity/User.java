@@ -18,7 +18,14 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fatec.lab.atividade02.view.AccountView;
 import com.fatec.lab.atividade02.view.UserView;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 @Entity
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -36,6 +43,7 @@ public class User implements UserDetails {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JsonView({ UserView.UserDetail.class, UserView.UserList.class })
 	private List<Profile> profiles = new ArrayList<>();
+	
 
 	public User(String name, String password, List<Profile> profiles) {
 		this.userName = name;
@@ -71,22 +79,6 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public List<Profile> getProfiles() {
-		return profiles;
 	}
 
 }

@@ -2,6 +2,13 @@ package com.fatec.lab.atividade02.form;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginForm {
 
 	private String userName;
@@ -10,21 +17,5 @@ public class LoginForm {
 	public UsernamePasswordAuthenticationToken converter() {
 		return new UsernamePasswordAuthenticationToken(userName, password);
 	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
+	
 }

@@ -31,6 +31,10 @@ public class UserService {
 		return userRepository.findById(userId).orElseThrow(() -> new ObjectNotFoundException("Usuario nao encontrado."));
 	}
 
+	public User findUser(Long userId) {
+		return userRepository.findById(userId).get();
+	}
+	
 	public Optional<User> findByUserName(String userName) {
 		return userRepository.findByUserName(userName);
 	}
