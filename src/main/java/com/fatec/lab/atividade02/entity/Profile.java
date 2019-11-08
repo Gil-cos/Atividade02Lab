@@ -1,5 +1,6 @@
 package com.fatec.lab.atividade02.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,13 +10,14 @@ import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fatec.lab.atividade02.view.ProfileView;
+import com.fatec.lab.atividade02.view.UserView;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Profile implements GrantedAuthority{
@@ -25,7 +27,8 @@ public class Profile implements GrantedAuthority{
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@JsonView({ProfileView.ProfileDetail.class, ProfileView.ProfileList.class})
+	@Column(name = "NAME", nullable = false)
+	@JsonView({ProfileView.ProfileDetail.class, ProfileView.ProfileList.class, UserView.UserList.class, UserView.UserDetail.class})
 	private String name;
 	
 	@Override

@@ -2,6 +2,8 @@ package com.fatec.lab.atividade02.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,19 +32,22 @@ public class Bank {
 	@JsonView({BankView.BankList.class})
 	private Long id;
 	
+	@Column(name = "NAME", nullable = false)
 	@NotNull(message = "Provide a name")
 	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class, BankView.BankList.class})
 	private String name;
 	
+	@Column(name = "CNPJ", nullable = false)
 	@NotNull(message = "Provide an cnpj")
 	@JsonView({BankView.BankList.class})
 	private String cnpj;
 	
+	@Column(name = "ENDEREÇO", nullable = false)
 	@NotNull(message = "Provide an address")
 	@JsonView({BankView.BankList.class})
 	private String endereço;
 	
-	@OneToMany(mappedBy = "bank")
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "bank")
 	private Set<Account> accounts;
 
 }
