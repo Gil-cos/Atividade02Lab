@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginForm {
 
-	private String userName;
+	private String username;
 	private String password;
 
 	public UsernamePasswordAuthenticationToken converter() {
-		return new UsernamePasswordAuthenticationToken(userName, password);
+		return new UsernamePasswordAuthenticationToken(username, password);
 	}
 	
 }

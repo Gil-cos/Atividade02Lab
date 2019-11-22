@@ -37,6 +37,11 @@ public class Bank {
 	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class, BankView.BankList.class})
 	private String name;
 	
+	@Column(name = "AGENCY", nullable = false)
+	@NotNull(message = "Provide a name")
+	@JsonView({AccountView.AccountDetail.class, AccountView.AccountList.class, BankView.BankList.class})
+	private Long agency;
+	
 	@Column(name = "CNPJ", nullable = false)
 	@NotNull(message = "Provide an cnpj")
 	@JsonView({BankView.BankList.class})

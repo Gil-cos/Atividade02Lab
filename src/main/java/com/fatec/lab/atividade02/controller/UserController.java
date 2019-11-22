@@ -8,8 +8,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,21 +34,18 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping(value = "list/{profile}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@JsonView({ UserView.UserList.class })
 	public ResponseEntity<List<User>> listAll(@PathVariable final String profile) {
 		return new ResponseEntity<List<User>>(userService.findByProfilesName(profile), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@JsonView({ UserView.UserDetail.class })
 	public ResponseEntity<User> getById(@PathVariable final Long id) throws ObjectNotFoundException {
 		return new ResponseEntity<User>(userService.findById(id), HttpStatus.OK);
 	}
 
 	@PostMapping()
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@JsonView({ UserView.UserDetail.class })
 	public ResponseEntity<User> create(@RequestBody @Valid final UserForm userForm, UriComponentsBuilder uriBuilder) {
 		User newUser = userService.newUser(userForm);
@@ -58,9 +53,7 @@ public class UserController {
 		return ResponseEntity.created(uri).body(newUser);
 	}
 
-	@Transactional
 	@PutMapping(value = "/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@JsonView({ UserView.UserDetail.class })
 	public ResponseEntity<User> update(@RequestBody @Valid final UserForm userForm, @PathVariable final Long id)
 			throws ObjectNotFoundException {
@@ -68,7 +61,6 @@ public class UserController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ResponseEntity<?> delete(@PathVariable final Long id) throws ObjectNotFoundException {
 		userService.delete(id);
 		return ResponseEntity.noContent().build();

@@ -16,9 +16,9 @@ import com.fatec.lab.atividade02.exception.ApiErro;
 
 import javassist.tools.rmi.ObjectNotFoundException;
 
-
 @ControllerAdvice
 public class ExceptionController {
+	
 	@ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<ApiErro> objectNotFound(ObjectNotFoundException e,HttpServletRequest request){
 		ApiErro error = new ApiErro(HttpStatus.NOT_FOUND.value(), e.getMessage().replace(" is not exported", "."));		

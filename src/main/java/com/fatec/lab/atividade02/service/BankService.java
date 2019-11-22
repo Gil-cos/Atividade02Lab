@@ -1,15 +1,12 @@
 package com.fatec.lab.atividade02.service;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fatec.lab.atividade02.entity.Account;
 import com.fatec.lab.atividade02.entity.Bank;
-import com.fatec.lab.atividade02.repository.AccountRepository;
 import com.fatec.lab.atividade02.repository.BankRepository;
 
 import javassist.tools.rmi.ObjectNotFoundException;
@@ -17,19 +14,8 @@ import javassist.tools.rmi.ObjectNotFoundException;
 @Service
 public class BankService {
 
-	public void setBankRepository(BankRepository bankRepository) {
-		this.bankRepository = bankRepository;
-	}
-
-	public void setAccountRepo(AccountRepository accountRepo) {
-		this.accountRepo = accountRepo;
-	}
-
 	@Autowired
 	private BankRepository bankRepository;
-
-	@Autowired
-	private AccountRepository accountRepo;
 
 	@Transactional
 	public Bank createBank(String nome, String cnpj, String endereco) {
@@ -42,10 +28,7 @@ public class BankService {
 
 	@Transactional
 	public void deleteBank(Long id) throws ObjectNotFoundException {
-		Bank deletedBank = bankRepository.findById(id)
-				.orElseThrow(() -> new ObjectNotFoundException("Banco não encontrado"));
-
-		bankRepository.delete(deletedBank);
+		bankRepository.delete(findById(id));
 	}
 
 	public Bank getBankByCnpj(String cnpj) throws ObjectNotFoundException {
@@ -57,20 +40,12 @@ public class BankService {
 		return bankRepository.findByName(name);
 	}
 
-	public void setBankAccount(String bankName, String accountOwnerName) {
-		Bank bank = bankRepository.findByName(bankName);
-		Account conta = accountRepo.findByOwner(accountOwnerName);
-
-		Set<Account> contas = bank.getAccounts();
-		contas.add(conta);
-
-		bank.setAccounts(contas);
-
-		bankRepository.save(bank);
-	}
-
 	public List<Bank> getAll() {
 		return bankRepository.findAll();
+	}
+
+	public Bank findById(Long bankId) throws ObjectNotFoundException {
+		return bankRepository.findById(bankId).orElseThrow(() -> new ObjectNotFoundException("Banco nao encontrado."));
 	}
 
 }

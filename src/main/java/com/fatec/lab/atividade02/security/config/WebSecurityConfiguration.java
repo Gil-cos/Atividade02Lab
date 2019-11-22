@@ -21,7 +21,6 @@ import com.fatec.lab.atividade02.service.AuthService;
 import com.fatec.lab.atividade02.service.TokenService;
 import com.fatec.lab.atividade02.service.UserService;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -32,7 +31,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private TokenService tokenService;
-	
+
 	@Autowired
 	private UserService userService;
 	

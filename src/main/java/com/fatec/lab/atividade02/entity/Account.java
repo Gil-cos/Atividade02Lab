@@ -17,16 +17,17 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fatec.lab.atividade02.enums.AccountType;
+import com.fatec.lab.atividade02.form.AccountForm;
 import com.fatec.lab.atividade02.view.AccountView;
 import com.fatec.lab.atividade02.view.UserView;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account {
@@ -65,4 +66,22 @@ public class Account {
 	@JsonView({ AccountView.AccountDetail.class, AccountView.AccountList.class })
 	private AccountType type;
 
+	
+	public Account(final AccountForm accountForm) {
+		this.number = accountForm.getNumber();
+		this.password = accountForm.getPassword();
+		this.type = accountForm.getType();
+	}
+	
+	public Account update(final AccountForm accountForm) {
+		this.number = accountForm.getNumber();
+		this.password = accountForm.getPassword();
+		this.type = accountForm.getType();
+		return this;
+	}
+
+	public void setReference(final Bank bank, final User user) {
+		this.owner = user;
+		this.bank = bank;
+	}
 }
