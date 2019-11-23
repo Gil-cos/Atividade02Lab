@@ -1,6 +1,5 @@
 package com.fatec.lab.atividade02.form;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.fatec.lab.atividade02.enums.AccountType;
@@ -14,19 +13,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccountForm {
 	
-	@NotNull @NotEmpty
+	@NotNull
 	private Long number;
 
-	@NotNull @NotEmpty
+	@NotNull 
 	private Long ownerId;
 	
-	@NotNull @NotEmpty
+	@NotNull
 	private Long bankId;
 	
-	@NotNull @NotEmpty
+	@NotNull
 	private String password;
 	
-	@NotNull @NotEmpty
+	@NotNull
 	private AccountType type;
 
 }

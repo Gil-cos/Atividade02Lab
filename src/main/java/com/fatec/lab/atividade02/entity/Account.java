@@ -11,13 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fatec.lab.atividade02.enums.AccountType;
 import com.fatec.lab.atividade02.form.AccountForm;
+import com.fatec.lab.atividade02.form.AccountUpdateForm;
 import com.fatec.lab.atividade02.view.AccountView;
 import com.fatec.lab.atividade02.view.UserView;
 
@@ -26,7 +25,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,12 +35,12 @@ public class Account {
 	@JsonView({ AccountView.AccountList.class })
 	private Long id;
 	
-	@Column(name = "NUMBER", nullable = false)
+	@Column(name = "NUMBER", nullable = false, unique = true)
 	@NotNull(message = "Provide a number")
 	@JsonView({ AccountView.AccountDetail.class, AccountView.AccountList.class, UserView.UserDetail.class, UserView.UserList.class })
 	private Long number;
 
-	@OneToOne
+	@ManyToOne()
 	@JoinColumn(name = "OWNER", nullable = false)
 	@NotNull(message = "Provide an owner")
 	@JsonView({ AccountView.AccountDetail.class, AccountView.AccountList.class })
@@ -67,21 +65,31 @@ public class Account {
 	private AccountType type;
 
 	
-	public Account(final AccountForm accountForm) {
-		this.number = accountForm.getNumber();
-		this.password = accountForm.getPassword();
-		this.type = accountForm.getType();
+	public Account(final AccountForm form) {
+		this.number = form.getNumber();
+		this.password = form.getPassword();
+		this.type = form.getType();
+		this.balance = BigDecimal.ZERO;
 	}
 	
-	public Account update(final AccountForm accountForm) {
-		this.number = accountForm.getNumber();
-		this.password = accountForm.getPassword();
-		this.type = accountForm.getType();
+	public Account update(final AccountUpdateForm form) {
+		this.password = form.getPassword();
+		this.type = form.getType();
 		return this;
 	}
 
 	public void setReference(final Bank bank, final User user) {
 		this.owner = user;
 		this.bank = bank;
+	}
+
+	public Account withdraw(final BigDecimal value) {
+		this.balance = this.balance.subtract(value);
+		return this;
+	}
+
+	public Account deposit(final BigDecimal value) {
+		this.balance = this.balance.add(value);
+		return this;
 	}
 }

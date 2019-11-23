@@ -1,8 +1,13 @@
 package com.fatec.lab.atividade02.service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +17,8 @@ import com.fatec.lab.atividade02.entity.Bank;
 import com.fatec.lab.atividade02.entity.User;
 import com.fatec.lab.atividade02.enums.AccountType;
 import com.fatec.lab.atividade02.form.AccountForm;
+import com.fatec.lab.atividade02.form.AccountUpdateForm;
+import com.fatec.lab.atividade02.form.TransactionalForm;
 import com.fatec.lab.atividade02.repository.AccountRepository;
 
 import javassist.tools.rmi.ObjectNotFoundException;
@@ -34,17 +41,31 @@ public class AccountService {
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	public Account createAccount(final AccountForm accountForm) throws ObjectNotFoundException {
-		Bank bank = bankService.findById(accountForm.getBankId());
-		User user = userService.findById(accountForm.getOwnerId());
-		Account newAccount = new Account(accountForm);
+	public Account createAccount(final AccountForm form) throws ObjectNotFoundException {
+		Bank bank = bankService.findById(form.getBankId());
+		User user = userService.findById(form.getOwnerId());
+		Account newAccount = new Account(form);
 		newAccount.setReference(bank, user);
 		return save(newAccount);
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN') or hasAnyRole('ROLE_CUSTOMER')")
-	public Account update(final Long id, AccountForm accountForm) throws ObjectNotFoundException {
-		return save(findById(id).update(accountForm));
+	public Account update(final Long id, AccountUpdateForm form) throws ObjectNotFoundException {
+		return save(findById(id).update(form));
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CUSTOMER')")
+	public Account withdraw(final Long id, @Valid final TransactionalForm form) throws ObjectNotFoundException {
+		Account account = findById(id);
+		validateWithdraw(account, form.getValue());
+		return save(account.withdraw(form.getValue()));
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CUSTOMER')")
+	public Account deposit(final Long id, @Valid final TransactionalForm form) throws ObjectNotFoundException {
+		Account account = findById(id);
+		validateDeposit(form.getValue());
+		return save(account.deposit(form.getValue()));
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -58,8 +79,8 @@ public class AccountService {
 	}
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN') or hasAnyRole('ROLE_CUSTOMER')")
-	public Account getAccountByOwner(final String owner) throws ObjectNotFoundException {
-		return accountRepository.findByOwnerUserName(owner).orElseThrow(() -> new ObjectNotFoundException("Conta não encontrada."));
+	public Account getAccountByOwner(final Long number) throws ObjectNotFoundException {
+		return accountRepository.findByNumber(number).orElseThrow(() -> new ObjectNotFoundException("Conta não encontrada."));
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -72,14 +93,30 @@ public class AccountService {
 		delete(findById(id));
 	}
 	
+	public Optional<Account> findByOwner(final User owner) {
+		return accountRepository.findByOwner(owner);
+	}
+	
 	@Transactional
 	private Account save(final Account account) {
 		return accountRepository.save(account);
 	}
 
+	@Transactional
 	private void delete(final Account account) {
 		accountRepository.delete(account);
 	}
 
+	private void validateWithdraw(final Account account, final BigDecimal value) {
+		if (account.getBalance().compareTo(value) == -1 || value.compareTo(BigDecimal.ZERO) == -1) {
+			throw new DataIntegrityViolationException("Valor invalido.");
+		}
+	}
+	
+	private void validateDeposit(final BigDecimal value) {
+		if (value.compareTo(BigDecimal.ZERO) == -1) {
+			throw new DataIntegrityViolationException("Valor invalido.");
+		}
+	}
 
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,8 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,15 +41,18 @@ public class User implements UserDetails {
 	private Long id;
 
 	@Column(name = "USER_NAME", nullable = false)
-	@JsonView({ UserView.UserDetail.class, UserView.UserList.class, AccountView.AccountDetail.class })
+	@NotNull(message = "Provide a username")
+	@JsonView({ UserView.UserDetail.class, UserView.UserList.class, AccountView.AccountDetail.class, AccountView.AccountList.class })
 	private String userName;
 	
 	@Column(name = "PASSWORD", nullable = false)
+	@NotNull(message = "Provide a password")
 	private String password;
 	
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "owner")
-	@JsonView({ UserView.UserDetail.class, UserView.UserList.class })
-	private Account account;
+	@Column(name = "CPF", nullable = false, unique = true)
+	@NotNull(message = "Provide a CPF")
+	@JsonView({ UserView.UserList.class, UserView.UserDetail.class })
+	private String cpf;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JsonView({ UserView.UserDetail.class, UserView.UserList.class })
@@ -96,6 +98,7 @@ public class User implements UserDetails {
 	public User update(@Valid UserForm userForm, PasswordEncoder encoder, Profile profile) {
 		this.userName = userForm.getUserName();
 		this.password = encoder.encode(userForm.getPassword());
+		this.cpf = userForm.getCpf();
 		updateProfile(profile);
 		return this;
 	}
@@ -104,5 +107,6 @@ public class User implements UserDetails {
 		this.profiles.clear();
 		this.profiles.add(profile);
 	}
+
 
 }

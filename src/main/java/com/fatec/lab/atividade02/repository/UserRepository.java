@@ -9,8 +9,10 @@ import com.fatec.lab.atividade02.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	Optional<User> findByUserName(String userName);
+	Optional<User> findByUserName(final String userName);
 
-	List<User> findByProfilesName(String name);
+	List<User> findByProfilesName(final String name);
+
+	Optional<User> findByCpf(final String cpf);
 
 }

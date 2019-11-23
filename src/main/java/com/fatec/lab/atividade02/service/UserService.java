@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fatec.lab.atividade02.entity.Account;
 import com.fatec.lab.atividade02.entity.Profile;
 import com.fatec.lab.atividade02.entity.User;
 import com.fatec.lab.atividade02.form.UserForm;
@@ -25,6 +27,9 @@ public class UserService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private AccountService accountService;
 	
 	@Autowired
 	private ProfileService profileService;
@@ -46,6 +51,12 @@ public class UserService {
 		return userRepository.findById(userId).get();
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	public User findByCpf(final String cpf) throws ObjectNotFoundException {
+		return userRepository.findByCpf(cpf)
+				.orElseThrow(() -> new ObjectNotFoundException("Usuario nao encontrado."));
+	}
+
 	public Optional<User> findByUserName(final String userName) {
 		return userRepository.findByUserName(userName);
 	}
@@ -57,7 +68,13 @@ public class UserService {
 
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public void delete(final Long id) throws ObjectNotFoundException {
-		delete(findById(id));
+		User user = findById(id);
+		Optional<Account> account = accountService.findByOwner(user);
+		if (account.isPresent()) {
+			throw new DataIntegrityViolationException("Usuario possui uma conta ativa.");
+		} else {
+			delete(user);	
+		}
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -71,8 +88,10 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
+	@Transactional
 	private void delete(final User user) {
 		userRepository.delete(user);
 	}
+
 
 }

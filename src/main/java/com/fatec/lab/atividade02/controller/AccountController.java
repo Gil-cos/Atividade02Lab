@@ -20,9 +20,10 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fatec.lab.atividade02.entity.Account;
 import com.fatec.lab.atividade02.enums.AccountType;
 import com.fatec.lab.atividade02.form.AccountForm;
+import com.fatec.lab.atividade02.form.AccountUpdateForm;
+import com.fatec.lab.atividade02.form.TransactionalForm;
 import com.fatec.lab.atividade02.service.AccountService;
 import com.fatec.lab.atividade02.view.AccountView;
-import com.fatec.lab.atividade02.view.UserView;
 
 import javassist.tools.rmi.ObjectNotFoundException;
 
@@ -39,7 +40,7 @@ public class AccountController {
 		return new ResponseEntity<List<Account>>(accountService.getAll(), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "{bankName}/{type}")
+	@GetMapping(value = "bank/{bankName}/type/{type}")
 	@JsonView({ AccountView.AccountList.class })
 	public ResponseEntity<List<Account>> getByBankName(@PathVariable String bankName, @PathVariable AccountType type) {
 		return new ResponseEntity<List<Account>>(accountService.getByBankNameAndType(bankName, type), HttpStatus.OK);
@@ -52,23 +53,23 @@ public class AccountController {
 	}
 	
 	@PutMapping(value = "/{id}")
-	@JsonView({ UserView.UserDetail.class })
-	public ResponseEntity<Account> update(@RequestBody @Valid final AccountForm accountForm, @PathVariable final Long id)
+	@JsonView({ AccountView.AccountDetail.class })
+	public ResponseEntity<Account> update(@RequestBody @Valid final AccountUpdateForm accountForm, @PathVariable final Long id)
 			throws ObjectNotFoundException {
 		return ResponseEntity.ok(accountService.update(id, accountForm));
 	}
 	
-	@GetMapping(value = "{owner}")
+	@GetMapping(value = "number/{number}")
 	@JsonView({ AccountView.AccountDetail.class })
-	public ResponseEntity<Account> getByOwner(@PathVariable String owner) throws ObjectNotFoundException {
-		Account conta = accountService.getAccountByOwner(owner);
+	public ResponseEntity<Account> getByOwner(@PathVariable Long number) throws ObjectNotFoundException {
+		Account conta = accountService.getAccountByOwner(number);
 		return new ResponseEntity<Account>(conta, HttpStatus.OK);
 	}
 
 	@PostMapping()
 	@JsonView({ AccountView.AccountDetail.class })
-	public ResponseEntity<Account> save(@RequestBody AccountForm accountForm) throws ObjectNotFoundException {
-		Account newAccount = accountService.createAccount(accountForm);
+	public ResponseEntity<Account> save(@RequestBody AccountForm form) throws ObjectNotFoundException {
+		Account newAccount = accountService.createAccount(form);
 		return ResponseEntity.ok(newAccount);
 	}
 
@@ -76,6 +77,20 @@ public class AccountController {
 	public ResponseEntity<String> delete(@PathVariable Long id) throws ObjectNotFoundException {
 		accountService.deleteAccount(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping(value = "/{id}/withdraw")
+	@JsonView({ AccountView.AccountDetail.class })
+	public ResponseEntity<Account> withdraw(@RequestBody @Valid final TransactionalForm form , @PathVariable final Long id)
+			throws ObjectNotFoundException {
+		return ResponseEntity.ok(accountService.withdraw(id, form));
+	}
+	
+	@PutMapping(value = "/{id}/deposit")
+	@JsonView({ AccountView.AccountDetail.class })
+	public ResponseEntity<Account> deposit(@RequestBody @Valid final TransactionalForm form , @PathVariable final Long id)
+			throws ObjectNotFoundException {
+		return ResponseEntity.ok(accountService.deposit(id, form));
 	}
 
 }
