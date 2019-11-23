@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import com.fatec.lab.atividade02.form.LoginForm;
 import com.fatec.lab.atividade02.service.TokenService;
 
 @RestController
+@CrossOrigin
 public class AuthRestController {
 
 	@Autowired
@@ -27,6 +29,7 @@ public class AuthRestController {
 
 
 	@PostMapping(value = "/api/auth")
+	@CrossOrigin
 	public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginForm form) {
 		UsernamePasswordAuthenticationToken dadosLogin = form.converter();
 		

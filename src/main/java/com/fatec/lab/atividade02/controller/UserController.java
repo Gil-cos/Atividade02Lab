@@ -42,7 +42,7 @@ public class UserController {
 	@GetMapping(value = "/{id}")
 	@JsonView({ UserView.UserDetail.class })
 	public ResponseEntity<User> getById(@PathVariable final Long id) throws ObjectNotFoundException {
-		return new ResponseEntity<User>(userService.findById(id), HttpStatus.OK);
+		return new ResponseEntity<User>(userService.findUser(id), HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/cpf/{cpf}")

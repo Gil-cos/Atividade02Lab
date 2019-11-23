@@ -41,7 +41,7 @@ public class UserService {
 		return save(newUser);
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN') or hasAnyRole('ROLE_CUSTOMER')")
 	public User findById(final Long userId) throws ObjectNotFoundException {
 		return userRepository.findById(userId)
 				.orElseThrow(() -> new ObjectNotFoundException("Usuario nao encontrado."));

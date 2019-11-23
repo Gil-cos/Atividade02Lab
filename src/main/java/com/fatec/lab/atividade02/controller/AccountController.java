@@ -1,6 +1,7 @@
 package com.fatec.lab.atividade02.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fatec.lab.atividade02.entity.Account;
+import com.fatec.lab.atividade02.entity.User;
 import com.fatec.lab.atividade02.enums.AccountType;
 import com.fatec.lab.atividade02.form.AccountForm;
 import com.fatec.lab.atividade02.form.AccountUpdateForm;
@@ -65,6 +67,18 @@ public class AccountController {
 		Account conta = accountService.getAccountByOwner(number);
 		return new ResponseEntity<Account>(conta, HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "user/{userId}")
+	@JsonView({ AccountView.AccountDetail.class })
+	public ResponseEntity<Account> getByUserId(@PathVariable Long userId) throws ObjectNotFoundException {
+		Optional<Account> conta = accountService.getAccountByUserId(userId);
+		if (conta.isPresent()) {
+			return new ResponseEntity<Account>(conta.get(), HttpStatus.OK);
+		}
+		return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
+		
+	}
+	
 
 	@PostMapping()
 	@JsonView({ AccountView.AccountDetail.class })

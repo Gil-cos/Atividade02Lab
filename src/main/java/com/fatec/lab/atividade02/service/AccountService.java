@@ -119,4 +119,10 @@ public class AccountService {
 		}
 	}
 
+	public Optional<Account> getAccountByUserId(Long userId) throws ObjectNotFoundException {
+		User user = userService.findById(userId);
+		Optional<Account> account = accountRepository.findByOwner(user);
+		return account;
+	}
+
 }
