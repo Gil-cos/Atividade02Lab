@@ -77,7 +77,7 @@ public class UserService {
 		}
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN') or hasAnyRole('ROLE_CUSTOMER')")
 	public User update(final Long id, final UserForm userForm) throws ObjectNotFoundException {
 		Profile profile = profileService.getByName(userForm.getProfile());
 		return save(findById(id).update(userForm, passwordEncoder, profile));

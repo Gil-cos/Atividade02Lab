@@ -56,16 +56,26 @@ public class AccountService {
 
 	@PreAuthorize("hasAnyRole('ROLE_CUSTOMER')")
 	public Account withdraw(final Long id, @Valid final TransactionalForm form) throws ObjectNotFoundException {
-		Account account = findById(id);
-		validateWithdraw(account, form.getValue());
-		return save(account.withdraw(form.getValue()));
+		//Account account = findById(id);
+		Optional<Account> accountAux = accountRepository.findByNumber(id);
+		if (accountAux.isPresent()) {
+			Account account = accountAux.get();
+			validateWithdraw(account, form.getValue());
+			return save(account.withdraw(form.getValue()));
+		}
+		return null;
+		
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CUSTOMER')")
 	public Account deposit(final Long id, @Valid final TransactionalForm form) throws ObjectNotFoundException {
-		Account account = findById(id);
-		validateDeposit(form.getValue());
-		return save(account.deposit(form.getValue()));
+		Optional<Account> accountAux = accountRepository.findByNumber(id); //findById(id);
+		if (accountAux.isPresent()) {
+			Account account = accountAux.get();
+			validateDeposit(form.getValue());
+			return save(account.deposit(form.getValue()));
+		}
+		return null;		
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
