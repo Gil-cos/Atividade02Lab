@@ -15,7 +15,7 @@ public class UserForm {
 	@NotNull @NotEmpty
 	private String userName;
 	
-	@NotNull
+	@NotNull @NotEmpty
 	private String cpf;
 
 	@NotNull @NotEmpty

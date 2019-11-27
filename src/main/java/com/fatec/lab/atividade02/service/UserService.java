@@ -36,7 +36,7 @@ public class UserService {
 
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public User newUser(final UserForm userForm) {
-		User newUser = new User(userForm.getUserName(), passwordEncoder.encode(userForm.getPassword()),
+		User newUser = new User(userForm.getUserName(), userForm.getCpf(), passwordEncoder.encode(userForm.getPassword()),
 				Arrays.asList(profileService.getByName(userForm.getProfile())));
 		return save(newUser);
 	}

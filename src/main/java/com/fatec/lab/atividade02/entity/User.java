@@ -59,8 +59,9 @@ public class User implements UserDetails {
 	private List<Profile> profiles = new ArrayList<>();
 	
 
-	public User(String name, String password, List<Profile> profiles) {
+	public User(String name, String cpf, String password, List<Profile> profiles) {
 		this.userName = name;
+		this.cpf = cpf;
 		this.password = password;
 		this.profiles.addAll(profiles);
 	}

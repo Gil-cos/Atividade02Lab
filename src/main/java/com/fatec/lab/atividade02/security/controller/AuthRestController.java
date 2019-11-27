@@ -39,6 +39,7 @@ public class AuthRestController {
 			return ResponseEntity.ok(new TokenDto(token, "Bearer"));
 			
 		} catch (AuthenticationException e) {
+			System.out.println(e.getMessage());
 			return ResponseEntity.badRequest().build();
 		}
 	}
